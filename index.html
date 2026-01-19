@@ -5,15 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Øne in a Half — фан-сайт</title>
     <meta name="description" content="Øne in a Half — фан-сайт: лор, галерея, посты, ссылки." />
-    <link rel="icon" href="/assets/favicon.jpg" />
+
+    <!-- поменяй на своё реальное имя файла, если не favicon.jpg -->
+    <link rel="icon" href="assets/favicon.jpg" />
     <link rel="stylesheet" href="styles.css" />
   </head>
+
   <body>
-    <header class="header">
+    <header class="header" id="top">
       <div class="container header__inner">
         <a class="logo" href="#top">Øne<span>in</span>aHalf</a>
 
-        <nav class="nav" aria-label="Навигация">
+        <nav class="nav" id="nav">
           <a href="#lore">Лор</a>
           <a href="#gallery">Галерея</a>
           <a href="#posts">Посты</a>
@@ -25,17 +28,22 @@
         </button>
       </div>
 
-      <div class="container hero" id="top">
+      <div class="container hero">
         <p class="badge">fan hub</p>
         <h1>Øne in a Half</h1>
         <p class="subtitle">
-          Место, где собирается эстетика, лор, подборки и мемы.
-          Здесь пока болванка — дальше разнесём красиво 😈
+          Тут лор, мемы, арты и подборки. Болванка уже живая — дальше докрутим стиль и контент.
         </p>
+
         <div class="hero__actions">
-          <a class="btn primary" href="#posts">Смотреть посты</a>
+          <a class="btn primary" href="#gallery">В галерею</a>
           <a class="btn" href="#links">Ссылки</a>
         </div>
+
+        <p class="hint">
+          <span>Совет:</span> если хочешь фон на первом экране — назови картинку <b>hero.jpg</b>
+          и она автоматически станет фоном.
+        </p>
       </div>
     </header>
 
@@ -43,106 +51,4 @@
       <section class="section" id="lore">
         <div class="container">
           <h2>Лор / Таймлайн</h2>
-          <p class="muted">Короткая хронология, события, персонажи, идеи — заполни как хочешь.</p>
-
-          <div class="grid cards">
-            <article class="card">
-              <h3>Эра 1</h3>
-              <p>Заготовка под описание: что произошло, какой вайб, какие символы.</p>
-            </article>
-            <article class="card">
-              <h3>Эра 2</h3>
-              <p>Заготовка под продолжение. Можно сделать как “эпизоды”.</p>
-            </article>
-            <article class="card">
-              <h3>Эра 3</h3>
-              <p>Тут можно держать “канон / фанон / теории”.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section alt" id="gallery">
-        <div class="container">
-          <div class="section__head">
-            <h2>Галерея</h2>
-            <div class="controls">
-              <input id="search" class="input" type="text" placeholder="Поиск по галерее..." />
-              <select id="filter" class="input">
-                <option value="all">Все</option>
-                <option value="memes">Мемы</option>
-                <option value="art">Арт</option>
-                <option value="covers">Обложки</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="grid gallery" id="galleryGrid">
-            <!-- Карточки генерятся из script.js -->
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="posts">
-        <div class="container">
-          <h2>Посты</h2>
-          <p class="muted">Можно вести мини-блог/новости/разборы.</p>
-
-          <div class="grid cards">
-            <article class="card">
-              <h3>Пост №1</h3>
-              <p>Короткий текст-заготовка. Потом сделаем страницу поста или модалку.</p>
-              <button class="btn small" data-toast="Скоро сделаем страницу поста 👀">Открыть</button>
-            </article>
-
-            <article class="card">
-              <h3>Подборка</h3>
-              <p>Плейлисты, “лучшие мемы недели”, подборка арта и т.д.</p>
-              <button class="btn small" data-toast="Тут будет подборка 🔥">Открыть</button>
-            </article>
-
-            <article class="card">
-              <h3>Теория</h3>
-              <p>Короткий тизер теории/разбора, а дальше — “читать”.</p>
-              <button class="btn small" data-toast="Сделаем красиво, обещаю 😄">Открыть</button>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section alt" id="links">
-        <div class="container">
-          <h2>Ссылки</h2>
-          <p class="muted">Telegram, YouTube, Spotify, Discord — что угодно.</p>
-
-          <div class="grid links">
-            <a class="linkCard" href="#" target="_blank" rel="noreferrer">
-              <span class="linkTitle">Telegram</span>
-              <span class="linkDesc">@oneinhalf (поставишь свой)</span>
-            </a>
-            <a class="linkCard" href="#" target="_blank" rel="noreferrer">
-              <span class="linkTitle">Discord</span>
-              <span class="linkDesc">Invite link</span>
-            </a>
-            <a class="linkCard" href="#" target="_blank" rel="noreferrer">
-              <span class="linkTitle">YouTube</span>
-              <span class="linkDesc">Channel</span>
-            </a>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="container footer__inner">
-        <p>© <span id="year"></span> Øne in a Half</p>
-        <p class="muted">Сделано на коленке, но со вкусом.</p>
-      </div>
-    </footer>
-
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="script.js"></script>
-  </body>
-</html>
-
-
+          <p class="muted">Тут можно держать канон/фанон, эпохи, п
