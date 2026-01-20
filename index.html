@@ -1,64 +1,63 @@
 <!doctype html>
 <html lang="en">
- <head>
-  <link rel="icon" href="/assets/favicon.jpg" type="image/jpeg" />
-<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
-<link rel="manifest" href="/site.webmanifest" />
-<meta name="theme-color" content="#07080a" />
+<head>
+  <meta charset="UTF-8" />
 
-<meta property="og:title" content="oneinhalf.online" />
-<meta property="og:description" content="Under Cunstruction 🚧" />
-<meta property="og:image" content="https://oneinhalf.online/assets/preview.png" />
-<meta property="og:url" content="https://oneinhalf.online" />
-<meta name="twitter:card" content="summary_large_image" />
+  <title>Under Cunstruction 🚧</title>
+
+  <meta name="description" content="oneinhalf.online is under cunstruction. Lore bunker is being built." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07080a" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+
+  <!-- Social preview (если потом вкинешь ссылку в тг/дискорд) -->
+  <meta property="og:title" content="oneinhalf.online" />
+  <meta property="og:description" content="The site is under cunstruction 🚧" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="preview.jpg" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
 
 </head>
+<body>
 
-  <body>
-    <main class="wrap">
-      <section class="card" aria-live="polite">
-        <div class="badge">
-          <span class="emoji">🚧</span>
-          <span class="text">UNDER CUNSTRUCTION</span>
+  <main class="wrap">
+    <section class="card">
+      <div class="badge">
+        <span class="emoji">🚧</span>
+        <span class="text">UNDER CUNSTRUCTION</span>
+      </div>
+
+      <h1>
+        oneinhalf.online
+        <span class="sub">is being cooked</span>
+      </h1>
+
+      <p class="desc">
+        We’re rebuilding this place into a lore bunker.
+      </p>
+
+      <div class="row">
+        <button id="btn" class="btn">Press for lore</button>
+        <div class="counter">
+          <span id="counter">0</span>
+          <span class="label">construction noises</span>
         </div>
+      </div>
 
-        <h1>
-          oneinhalf.online
-          <span class="sub">is being cooked</span>
-        </h1>
+      <div class="meter">
+        <div class="meter__bar" id="bar"></div>
+      </div>
 
-        <p class="desc">
-          We’re rebuilding this place into a lore bunker. Until then —
-          touch grass, drink water, and don’t trust bishops.
-        </p>
+      <div class="small" id="status">Progress: 0%</div>
+    </section>
+  </main>
 
-        <div class="row">
-          <button id="btn" class="btn" type="button">Press for lore</button>
-          <div class="counter">
-            <span id="counter">0</span>
-            <span class="label">construction noises</span>
-          </div>
-        </div>
-
-        <div class="meter">
-          <div class="meter__bar" id="bar"></div>
-        </div>
-        <div class="small" id="status">Progress: 0%</div>
-
-        <div class="footer">
-          <span class="dot" id="dot"></span>
-          <span id="line">Deploying vibes…</span>
-        </div>
-      </section>
-
-      <div class="grain" aria-hidden="true"></div>
-      <div class="scan" aria-hidden="true"></div>
-    </main>
-
-    <script src="./script.js"></script>
-  </body>
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
 </html>
-
-
-
-
