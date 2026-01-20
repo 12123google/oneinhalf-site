@@ -1,135 +1,55 @@
-// === 1) ВПИШИ ТУТ ИМЕНА СВОИХ ФАЙЛОВ ИЗ assets/ ===
-// Пример: "meme1.jpg", "art2.png", "cover(1).jpg"
-const FILES = [
-  "meme1.jpg",
-  "art1.png",
-  "cover1.jpg",
+const btn = document.getElementById("btn");
+const counterEl = document.getElementById("counter");
+const bar = document.getElementById("bar");
+const statusEl = document.getElementById("status");
+const dot = document.getElementById("dot");
+const line = document.getElementById("line");
+
+let clicks = 0;
+let progress = 0;
+
+const lines = [
+  "Deploying vibes…",
+  "Compiling lore…",
+  "Summoning trench energy…",
+  "Bishops detected (blocked).",
+  "Shipping pixels…",
+  "Almost cunstructed…",
+  "Ok this is taking longer than expected.",
 ];
 
+function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
 
-// === 2) Правила тегов по названию файла ===
-// Если в имени есть "meme" -> memes, "art" -> art, "cover" -> covers, иначе other
-function detectTag(filename) {
-  const n = filename.toLowerCase();
-  if (n.includes("meme")) return "memes";
-  if (n.includes("art")) return "art";
-  if (n.includes("cover")) return "covers";
-  return "other";
-}
+btn.addEventListener("click", () => {
+  clicks += 1;
+  counterEl.textContent = String(clicks);
 
-function prettyTitle(filename) {
-  return filename
-    .replace(/\.[^/.]+$/, "")
-    .replace(/[_-]+/g, " ")
-    .trim();
-}
+  // progress grows, but never reaches 100% (meme)
+  const inc = 7 + Math.floor(Math.random() * 9);
+  progress = clamp(progress + inc, 0, 96);
 
-const galleryItems = FILES.map((name) => ({
-  title: prettyTitle(name),
-  tag: detectTag(name),
-  img: `assets/${name}`,
-}));
+  bar.style.width = progress + "%";
+  statusEl.textContent = `Progress: ${progress}%`;
 
-const yearEl = document.getElementById("year");
-yearEl.textContent = new Date().getFullYear();
+  const pick = lines[Math.floor(Math.random() * lines.length)];
+  line.textContent = pick;
 
-const grid = document.getElementById("galleryGrid");
-const filter = document.getElementById("filter");
-const search = document.getElementById("search");
+  // flash dot
+  dot.classList.remove("ok");
+  dot.style.background = "var(--accent)";
+  setTimeout(() => {
+    dot.style.background = "";
+    if (progress >= 80) dot.classList.add("ok");
+  }, 120);
 
-function render(items) {
-  if (!items.length) {
-    grid.innerHTML = `
-      <div class="card" style="grid-column: 1 / -1;">
-        <h3>Ничего не найдено</h3>
-        <p class="muted">Либо фильтр слишком жёсткий, либо список FILES пустой.</p>
-      </div>
-    `;
-    return;
+  if (progress >= 90 && clicks % 3 === 0) {
+    line.textContent = "✅ Certified Cunstruction Moment";
   }
-
-  grid.innerHTML = items
-    .map(
-      (it) => `
-    <article class="tile" data-tag="${it.tag}" title="${it.title}">
-      <div class="tile__img">
-        <img src="${it.img}" alt="${it.title}" loading="lazy" />
-      </div>
-      <div class="tile__body">
-        <span class="tag">${it.tag}</span>
-        <p class="tile__title">${it.title}</p>
-      </div>
-    </article>
-  `
-    )
-    .join("");
-}
-
-function apply() {
-  const f = filter.value;
-  const q = search.value.trim().toLowerCase();
-
-  const out = galleryItems.filter((it) => {
-    const okFilter = f === "all" || it.tag === f;
-    const okQuery = it.title.toLowerCase().includes(q) || it.tag.includes(q);
-    return okFilter && okQuery;
-  });
-
-  render(out);
-}
-
-filter.addEventListener("change", apply);
-search.addEventListener("input", apply);
-
-// Если ты НЕ заполнил FILES — покажем подсказку
-if (FILES.length === 0) {
-  grid.innerHTML = `
-    <div class="card" style="grid-column: 1 / -1;">
-      <h3>Галерея пока пустая</h3>
-      <p class="muted">
-        Открой <b>script.js</b> и в массив <b>FILES</b> впиши имена картинок из папки <b>assets</b>.
-        Пример: <code>"meme1.jpg"</code>, <code>"art2.png"</code>.
-      </p>
-    </div>
-  `;
-} else {
-  render(galleryItems);
-}
-
-// Тостики
-const toast = document.getElementById("toast");
-let toastTimer = null;
-
-function showToast(text) {
-  toast.textContent = text;
-  toast.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove("show"), 1600);
-}
-
-document.querySelectorAll("[data-toast]").forEach((btn) => {
-  btn.addEventListener("click", () => showToast(btn.dataset.toast));
 });
 
-// Бургер меню
-const burger = document.getElementById("burger");
-const nav = document.getElementById("nav");
-
-burger.addEventListener("click", () => {
-  const isOpen = nav.classList.toggle("open");
-  burger.setAttribute("aria-expanded", String(isOpen));
-});
-
-// Авто-фон hero: если есть assets/hero.jpg — поставим как фон
-(async function tryHeroBg(){
-  const hero = document.querySelector(".hero");
-  try{
-    const res = await fetch("assets/hero.jpg", { method: "HEAD" });
-    if(res.ok){
-      hero.classList.add("has-bg");
-      hero.style.backgroundImage = `url("assets/hero.jpg")`;
-    }
-  } catch(e) {
-    // тихо игнорим
-  }
-})();
+// little idle animation
+setInterval(() => {
+  if (progress < 1) return;
+  const wobble = (Math.random() * 2 - 1) * 2;
+  bar.style.width = clamp(progress + wobble, 0, 96) + "%";
+}, 800);
