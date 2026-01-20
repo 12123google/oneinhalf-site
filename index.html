@@ -1,54 +1,53 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Øne in a Half — фан-сайт</title>
-    <meta name="description" content="Øne in a Half — фан-сайт: лор, галерея, посты, ссылки." />
-
-    <!-- поменяй на своё реальное имя файла, если не favicon.jpg -->
-    <link rel="icon" href="assets/favicon.jpg" />
-    <link rel="stylesheet" href="styles.css" />
+    <title>Under Cunstruction 🚧</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
   </head>
-
   <body>
-    <header class="header" id="top">
-      <div class="container header__inner">
-        <a class="logo" href="#top">Øne<span>in</span>aHalf</a>
-
-        <nav class="nav" id="nav">
-          <a href="#lore">Лор</a>
-          <a href="#gallery">Галерея</a>
-          <a href="#posts">Посты</a>
-          <a href="#links">Ссылки</a>
-        </nav>
-
-        <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-
-      <div class="container hero">
-        <p class="badge">fan hub</p>
-        <h1>Øne in a Half</h1>
-        <p class="subtitle">
-          Тут лор, мемы, арты и подборки. Болванка уже живая — дальше докрутим стиль и контент.
-        </p>
-
-        <div class="hero__actions">
-          <a class="btn primary" href="#gallery">В галерею</a>
-          <a class="btn" href="#links">Ссылки</a>
+    <main class="wrap">
+      <section class="card" aria-live="polite">
+        <div class="badge">
+          <span class="emoji">🚧</span>
+          <span class="text">UNDER CUNSTRUCTION</span>
         </div>
 
-        <p class="hint">
-          <span>Совет:</span> если хочешь фон на первом экране — назови картинку <b>hero.jpg</b>
-          и она автоматически станет фоном.
-        </p>
-      </div>
-    </header>
+        <h1>
+          oneinhalf.online
+          <span class="sub">is being cooked</span>
+        </h1>
 
-    <main>
-      <section class="section" id="lore">
-        <div class="container">
-          <h2>Лор / Таймлайн</h2>
-          <p class="muted">Тут можно держать канон/фанон, эпохи, п
+        <p class="desc">
+          We’re rebuilding this place into a lore bunker. Until then —
+          touch grass, drink water, and don’t trust bishops.
+        </p>
+
+        <div class="row">
+          <button id="btn" class="btn" type="button">Press for lore</button>
+          <div class="counter">
+            <span id="counter">0</span>
+            <span class="label">construction noises</span>
+          </div>
+        </div>
+
+        <div class="meter">
+          <div class="meter__bar" id="bar"></div>
+        </div>
+        <div class="small" id="status">Progress: 0%</div>
+
+        <div class="footer">
+          <span class="dot" id="dot"></span>
+          <span id="line">Deploying vibes…</span>
+        </div>
+      </section>
+
+      <div class="grain" aria-hidden="true"></div>
+      <div class="scan" aria-hidden="true"></div>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
