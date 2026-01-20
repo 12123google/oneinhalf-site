@@ -189,3 +189,5 @@ h1{
   );
   opacity: .12;
 }
+
+a.btn { display: inline-block; text-decoration: none; }
