@@ -6,11 +6,8 @@ const dot = document.getElementById("dot");
 const line = document.getElementById("line");
 
 let clicks = 0;
-
-// 100 кликов для "победы"
 const TARGET = 100;
 
-// Spotify линк
 const SPOTIFY =
   "https://open.spotify.com/track/72Iohx1KbhJR49FlNfJwWA?si=0239ac23cf2440dd";
 
@@ -23,21 +20,14 @@ const lines = [
   "Almost cunstructed…",
   "Ok this is taking longer than expected.",
   "Progress is a lie.",
+  "Trust the process (don’t).",
 ];
 
 function clamp(n, a, b) {
   return Math.max(a, Math.min(b, n));
 }
 
-/**
- * Рейджбейт-прогресс:
- * 1 клик: 50%
- * 2 клик: 75%
- * 3 клик: 87.5%
- * ...
- * Формула: progress = 100 * (1 - 0.5^clicks)
- * Но мы НЕ даём дойти до 100% до 100 кликов — принудительно держим 99%.
- */
+// Рейджбейт формула: 50%, 75%, 87.5%...
 function calcProgress(clicks) {
   const raw = 100 * (1 - Math.pow(0.5, clicks));
   const capped = clicks >= TARGET ? 100 : Math.min(raw, 99);
@@ -50,10 +40,10 @@ function setDot(mode) {
 
   if (mode === "ok") dot.classList.add("ok");
   if (mode === "accent") dot.style.background = "var(--accent)";
+  if (mode === "danger") dot.style.background = "var(--danger)";
 }
 
 function showUnlock() {
-  // не дублируем кнопку
   if (document.getElementById("unlock")) return;
 
   const row = document.querySelector(".row");
@@ -64,7 +54,7 @@ function showUnlock() {
   a.target = "_blank";
   a.rel = "noopener noreferrer";
   a.className = "btn";
-  a.textContent = "✅ UNLOCK THE SONG";
+  a.textContent = "🔓 UNLOCK THE SONG";
 
   row.appendChild(a);
 
@@ -74,6 +64,8 @@ function showUnlock() {
   setDot("ok");
 }
 
+let changeEvery = 20 + Math.floor(Math.random() * 11); // 20–30
+
 btn.addEventListener("click", () => {
   clicks += 1;
   counterEl.textContent = String(clicks);
@@ -82,18 +74,13 @@ btn.addEventListener("click", () => {
   bar.style.width = progress + "%";
   statusEl.textContent = `Progress: ${progress}%`;
 
-  // рандом фразы
-  line.textContent = lines[Math.floor(Math.random() * lines.length)];
+  // Текст меняется не каждый раз
+  if (clicks % changeEvery === 0) {
+    line.textContent = lines[Math.floor(Math.random() * lines.length)];
+    changeEvery = 20 + Math.floor(Math.random() * 11); // новый интервал
+  }
 
-  // flash dot
-  setDot("accent");
-  setTimeout(() => {
-    // после 80% пусть зелёный появляется иногда, но не всегда (ещё больше троллинга)
-    if (progress >= 80 && clicks % 2 === 0) setDot("ok");
-    else setDot("danger");
-  }, 120);
-
-  // мем-строки на определённых кликах
+  // Мемные точки
   if (clicks === 1) line.textContent = "50% on first click. Easy.";
   if (clicks === 2) line.textContent = "75% already. Almost done, right?";
   if (clicks === 3) line.textContent = "87.5%. This is totally normal.";
@@ -101,15 +88,21 @@ btn.addEventListener("click", () => {
   if (clicks === 50) line.textContent = "Halfway to 100 clicks. Progress ≠ reality.";
   if (clicks === 90) line.textContent = "So close. (Not really.)";
 
+  // Мигание точки
+  setDot("accent");
+  setTimeout(() => {
+    if (progress >= 80 && clicks % 2 === 0) setDot("ok");
+    else setDot("danger");
+  }, 120);
+
   if (clicks >= TARGET) {
     showUnlock();
   }
 });
 
-// маленькое дрожание полоски, но только до unlock
+// Лёгкое дрожание полоски до анлока
 setInterval(() => {
-  const unlock = document.getElementById("unlock");
-  if (unlock) return;
+  if (document.getElementById("unlock")) return;
 
   const p = calcProgress(clicks);
   if (p < 1) return;
