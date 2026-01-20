@@ -3,62 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Under Cunstruction 🚧</title>
-  <meta name="description" content="oneinhalf.online is under cunstruction 🚧" />
-  <meta name="theme-color" content="#07080a" />
-
-  <link rel="icon" type="image/jpeg" href="./favicon.jpg" />
-  <link rel="apple-touch-icon" href="./favicon.jpg" />
-
-  <link rel="stylesheet" href="./styles.css" />
+  <title>oneinhalf.online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
 </head>
-
-
 <body>
-  <main class="wrap">
-    <section class="card" aria-live="polite">
-      <div class="badge">
-        <span class="emoji">🚧</span>
-        <span class="text">UNDER CUNSTRUCTION</span>
-      </div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
 
-      <h1 class="title">
-        oneinhalf.online
-        <span class="sub">is being cooked</span>
+  <main class="wrap">
+    <section class="hero">
+      <p class="tag">DEMA ARCHIVE // SIGNAL DETECTED</p>
+
+      <h1 class="headline">
+        We've been here the whole time.<br />
+        You were asleep.<br />
+        <span class="accent">Time to wake up</span>
       </h1>
 
-      <p class="desc">
-        We’re rebuilding this place into a lore bunker.
-        Until then — touch grass, drink water, and don’t trust bishops.
+      <p class="sub">
+        The map remembers. The towers watch. Your steps will be counted.
       </p>
 
-      <div class="row">
-        <button id="btn" class="btn" type="button">Press for lore</button>
-
-        <div class="counter">
-          <span id="counter" class="counter__num">0</span>
-          <span class="counter__label">construction noises</span>
-        </div>
+      <div class="actions">
+        <button id="diveBtn" class="btn">
+          <span class="btn__glow" aria-hidden="true"></span>
+          <span class="btn__text">Dive into the journey</span>
+        </button>
       </div>
 
-      <div class="meter" aria-hidden="true">
-        <div class="meter__bar" id="bar"></div>
-      </div>
-
-      <div class="small" id="status">Progress: 0%</div>
-
-      <div class="footer">
-        <span class="dot" id="dot"></span>
-        <span id="line">Deploying vibes…</span>
+      <div class="footerHint">
+        <span class="dot"></span>
+        Press the button — and don’t look away.
       </div>
     </section>
-
-    <div class="grain" aria-hidden="true"></div>
-    <div class="scan" aria-hidden="true"></div>
   </main>
 
-  <!-- IMPORTANT: script tag is at the bottom so elements exist -->
   <script src="./script.js"></script>
 </body>
 </html>
