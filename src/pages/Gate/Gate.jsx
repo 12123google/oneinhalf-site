@@ -24,7 +24,8 @@ export default function Gate() {
     if (v === "ALWAYS") {
       setError("");
       // ничего не сохраняем — каждый раз надо вводить код
-      navigate("/map");
+     window.location.href = "/map";
+
       return;
     }
 
