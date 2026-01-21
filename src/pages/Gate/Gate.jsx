@@ -49,10 +49,6 @@ export default function Gate() {
         </p>
 
         <form className="gateForm" onSubmit={onSubmit}>
-          <label className="gateLabel" htmlFor="code">
-            Clearance code
-          </label>
-
           <div className="gateRow">
             <input
               id="code"
@@ -69,7 +65,7 @@ export default function Gate() {
             />
 
             <button className="gateBtn" type="submit">
-              Enter
+              Dive into the journey
             </button>
           </div>
 
