@@ -1,0 +1,204 @@
+:root{
+  --bg:#070a0d;
+  --glass:rgba(14,17,22,.48);
+  --glass2:rgba(14,17,22,.30);
+  --stroke:rgba(255,255,255,.12);
+  --text:rgba(245,248,255,.94);
+  --muted:rgba(245,248,255,.66);
+  --muted2:rgba(245,248,255,.50);
+  --accent:#e3d36a;
+}
+
+.gateWrap{
+  min-height: 100dvh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 28px 18px;
+
+  background:
+    radial-gradient(1100px 760px at 22% 28%, rgba(110,180,255,.20), transparent 60%),
+    radial-gradient(980px 720px at 78% 72%, rgba(255,95,95,.18), transparent 62%),
+    radial-gradient(820px 560px at 50% 55%, rgba(255,255,255,.10), transparent 58%),
+    radial-gradient(1200px 900px at 50% 50%, rgba(0,0,0,.35), rgba(0,0,0,.72) 62%, rgba(0,0,0,.85) 100%),
+    var(--bg);
+
+  color: var(--text);
+}
+
+.gateCard{
+  width: min(900px, 100%);
+  border-radius: 22px;
+  border: 1px solid var(--stroke);
+  background: linear-gradient(180deg, var(--glass), var(--glass2));
+  backdrop-filter: blur(20px);
+  box-shadow:
+    0 30px 100px rgba(0,0,0,.60),
+    0 0 0 1px rgba(255,255,255,.06) inset;
+
+  padding: 28px 28px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.gateCard::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  border-radius:22px;
+  background:
+    radial-gradient(900px 260px at 50% 0%, rgba(255,255,255,.14), transparent 60%),
+    radial-gradient(900px 320px at 0% 100%, rgba(110,180,255,.10), transparent 60%),
+    radial-gradient(900px 320px at 100% 100%, rgba(255,95,95,.08), transparent 60%);
+}
+
+.gateCard::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  border-radius:22px;
+  background: radial-gradient(1200px 900px at 50% 50%, transparent 40%, rgba(0,0,0,.35) 100%);
+}
+
+.gateTopline{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(245,248,255,.62);
+  margin-bottom: 10px;
+}
+
+.gateTitle{
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 800;
+  font-size: clamp(34px, 4.2vw, 58px);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 18px rgba(0,0,0,.35);
+}
+
+.gateTitle span{ display:block; }
+
+.gateAccent{
+  color: var(--accent);
+  margin-top: 2px;
+}
+
+.gateDesc{
+  margin: 14px 0 18px;
+  color: var(--muted);
+  max-width: 62ch;
+  line-height: 1.55;
+  font-size: 14px;
+}
+
+.gateRow{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  margin-top: 2px;
+  flex-wrap: wrap;
+}
+
+.gateInput{
+  width: min(360px, 100%);
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(0,0,0,.35);
+  color: var(--text);
+  padding: 0 14px;
+  outline: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.gateInput::placeholder{
+  color: rgba(245,248,255,.34);
+}
+
+.gateInput:focus{
+  border-color: rgba(227,211,106,.55);
+  box-shadow: 0 0 0 4px rgba(227,211,106,.10);
+}
+
+.gateBtn{
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(255,255,255,.055);
+  color: rgba(245,248,255,.92);
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform .12s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.35),
+    0 0 0 1px rgba(255,255,255,.06) inset;
+}
+
+.gateBtn:hover{
+  background: rgba(255,255,255,.085);
+  border-color: rgba(255,255,255,.22);
+  box-shadow:
+    0 12px 38px rgba(0,0,0,.42),
+    0 0 0 1px rgba(255,255,255,.10) inset;
+}
+
+.gateBtn:active{
+  transform: translateY(1px);
+}
+
+.gateHint{
+  margin-top: 14px;
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  color: var(--muted2);
+  font-size: 12px;
+}
+
+.gateDot{
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(227,211,106,.95);
+  box-shadow: 0 0 0 6px rgba(227,211,106,.10);
+}
+
+.gateError{
+  margin-top: 10px;
+  color: rgba(255,110,110,.95);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.shake{
+  animation: shake .45s ease;
+}
+
+@keyframes shake{
+  0%{ transform: translateX(0); }
+  20%{ transform: translateX(-8px); }
+  40%{ transform: translateX(8px); }
+  60%{ transform: translateX(-6px); }
+  80%{ transform: translateX(6px); }
+  100%{ transform: translateX(0); }
+}
+.gateWrap::after{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.06'/></svg>");
+  mix-blend-mode: overlay;
+  opacity: .35;
+}
