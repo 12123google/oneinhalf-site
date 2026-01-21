@@ -12,24 +12,20 @@ export default function Gate() {
   const inputRef = useRef(null);
 
   useEffect(() => {
-    // автофокус на инпут
     inputRef.current?.focus();
   }, []);
 
   const onSubmit = (e) => {
-    e.preventDefault(); // супер важно, чтобы не было перезагрузки
+    e.preventDefault();
 
     const v = code.trim().toUpperCase();
 
     if (v === "ALWAYS") {
       setError("");
-      // ничего не сохраняем — каждый раз надо вводить код
-     window.location.href = "/map";
-
+      navigate("/map");
       return;
     }
 
-    // ошибка + тряска
     setError("ACCESS DENIED");
     setShake(true);
     window.setTimeout(() => setShake(false), 450);
@@ -77,23 +73,12 @@ export default function Gate() {
             </button>
           </div>
 
-          <div className={`gateHint ${error ? "is-error" : ""}`}>
-            {error ? (
-              <>
-                <span className="dot danger" /> {error}
-              </>
-            ) : (
-              <>
-                <span className="dot" /> Press the button — and don’t look away.
-              </>
-            )}
-          </div>
+          {error && (
+            <div className="gateError">
+              <span className="dot danger" /> {error}
+            </div>
+          )}
         </form>
-
-        <div className="gateFoot">
-          Hint: the archive opens{" "}
-          <span className="mono">ALWAYS</span>.
-        </div>
       </div>
     </div>
   );
