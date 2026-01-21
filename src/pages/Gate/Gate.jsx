@@ -1,61 +1,98 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Gate.css";
 
-const ACCESS_CODE = "ALWAYS";
-
 export default function Gate() {
-  const nav = useNavigate();
-  const [code, setCode] = useState("");
-  const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
-  const submit = () => {
-    const cleaned = code.trim().toUpperCase();
-    if (cleaned === ACCESS_CODE) {
-      nav("/map");
+  const [code, setCode] = useState("");
+  const [error, setError] = useState("");
+  const [shake, setShake] = useState(false);
+
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    // автофокус на инпут
+    inputRef.current?.focus();
+  }, []);
+
+  const onSubmit = (e) => {
+    e.preventDefault(); // супер важно, чтобы не было перезагрузки
+
+    const v = code.trim().toUpperCase();
+
+    if (v === "ALWAYS") {
+      setError("");
+      // ничего не сохраняем — каждый раз надо вводить код
+      navigate("/map");
       return;
     }
-    setError(true);
-    setTimeout(() => setError(false), 450);
+
+    // ошибка + тряска
+    setError("ACCESS DENIED");
+    setShake(true);
+    window.setTimeout(() => setShake(false), 450);
   };
 
   return (
     <div className="gateWrap">
-      <div className="gateCard">
-        <div className="gateTopline">DEMA ARCHIVE // SIGNAL DETECTED</div>
+      <div className={`gateCard ${shake ? "is-shaking" : ""}`}>
+        <div className="gateKicker">DEMA ARCHIVE // SIGNAL DETECTED</div>
 
         <h1 className="gateTitle">
-          <span>We&apos;ve been here the whole time.</span>
-          <span>You were asleep.</span>
+          We&apos;ve been here the whole time.
+          <br />
+          You were asleep.
+          <br />
           <span className="gateAccent">Time to wake up</span>
         </h1>
 
-        <p className="gateDesc">
+        <p className="gateLead">
           The map remembers. The towers watch. Your steps will be counted.
         </p>
 
-        <div className={`gateRow ${error ? "shake" : ""}`}>
-          <input
-            className="gateInput"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            placeholder="ENTER CODE"
-            autoComplete="off"
-            spellCheck={false}
-            onKeyDown={(e) => e.key === "Enter" && submit()}
-          />
+        <form className="gateForm" onSubmit={onSubmit}>
+          <label className="gateLabel" htmlFor="code">
+            Clearance code
+          </label>
 
-          <button className="gateBtn" onClick={submit}>
-            Dive into the journey
-          </button>
+          <div className="gateRow">
+            <input
+              id="code"
+              ref={inputRef}
+              className="gateInput"
+              value={code}
+              onChange={(e) => {
+                setCode(e.target.value);
+                if (error) setError("");
+              }}
+              placeholder="TYPE HERE…"
+              autoComplete="off"
+              spellCheck={false}
+            />
+
+            <button className="gateBtn" type="submit">
+              Enter
+            </button>
+          </div>
+
+          <div className={`gateHint ${error ? "is-error" : ""}`}>
+            {error ? (
+              <>
+                <span className="dot danger" /> {error}
+              </>
+            ) : (
+              <>
+                <span className="dot" /> Press the button — and don’t look away.
+              </>
+            )}
+          </div>
+        </form>
+
+        <div className="gateFoot">
+          Hint: the archive opens{" "}
+          <span className="mono">ALWAYS</span>.
         </div>
-
-        <div className="gateHint">
-          <span className="gateDot" />
-          Press the button — and don’t look away.
-        </div>
-
-        {error && <div className="gateError">Wrong code.</div>}
       </div>
     </div>
   );
