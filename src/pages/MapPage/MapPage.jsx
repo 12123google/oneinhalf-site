@@ -1,166 +1,134 @@
 import { useEffect, useMemo, useState } from "react";
+import { POIS } from "../../data/poi";
+import mapImg from "../../assets/maps/dema.jpg";
 import "./MapPage.css";
 
-import mapImg from "../../assets/maps/dema.jpg";
-import { POI } from "../../data/poi";
-
-const LS_KEY = "oiah_visited_v1";
-
-function loadVisited() {
-  try {
-    return new Set(JSON.parse(localStorage.getItem(LS_KEY) || "[]"));
-  } catch {
-    return new Set();
-  }
-}
-
-function saveVisited(set) {
-  localStorage.setItem(LS_KEY, JSON.stringify([...set]));
-}
+const STORAGE_KEY = "oiah_visited_v01";
 
 export default function MapPage() {
-  const [activeId, setActiveId] = useState(null);
-  const [visited, setVisited] = useState(() => loadVisited());
+  const total = POIS.length;
 
-  useEffect(() => saveVisited(visited), [visited]);
+  const [activeId, setActiveId] = useState(null);
+  const [visited, setVisited] = useState(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  });
 
   const active = useMemo(
-    () => POI.find((p) => p.id === activeId) || null,
+    () => POIS.find((p) => p.id === activeId) || null,
     [activeId]
   );
 
-  const opened = useMemo(() => POI.filter((p) => visited.has(p.id)), [visited]);
-  const lockedCount = POI.length - opened.length;
+  const visitedCount = visited.length;
 
-  const openPoi = (poi) => {
-    setActiveId(poi.id);
-    setVisited((prev) => {
-      const next = new Set(prev);
-      next.add(poi.id);
-      return next;
-    });
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(visited));
+  }, [visited]);
+
+  const openPoi = (id) => {
+    setActiveId(id);
+    setVisited((prev) => (prev.includes(id) ? prev : [...prev, id]));
   };
 
-  const resetProgress = () => {
-    setVisited(new Set());
-    setActiveId(null);
-    localStorage.removeItem(LS_KEY);
-  };
+  const closePanel = () => setActiveId(null);
 
   return (
-    <div className="layout">
-      {/* LEFT */}
-      <section className="left">
-        <div className="mapScroll">
-          <div className="hud">
-            <div className="hudTag">DEMA ARCHIVE</div>
-            <div className="hudProg">
-              Progress: <b>{visited.size}</b>/<b>{POI.length}</b>
-            </div>
-            <button className="hudBtn" onClick={resetProgress}>
-              Reset
-            </button>
-          </div>
-
-          <div className="mapCanvas" style={{ backgroundImage: `url(${mapImg})` }}>
-            {POI.map((p) => {
-              const isVisited = visited.has(p.id);
-              const isActive = activeId === p.id;
-
-              // hover label: либо название, либо "?"
-              const label = isVisited ? p.title : "?";
-
-              return (
-                <button
-                  key={p.id}
-                  className={`poi ${isVisited ? "poi--visited" : "poi--locked"} ${
-                    isActive ? "poi--active" : ""
-                  }`}
-                  style={{ left: `${p.x}%`, top: `${p.y}%` }}
-                  onClick={() => openPoi(p)}
-                  aria-label={isVisited ? p.title : "Unknown point"}
-                  title={isVisited ? p.title : "Unknown"}
-                >
-                  <span className="poiLabel">{label}</span>
-                </button>
-              );
-            })}
-          </div>
+    <div className="mapWrap">
+      <div className="mapTopbar">
+        <div className="mapBrand">DEMA MAP // ARCHIVE MODE</div>
+        <div className="mapProgress">
+          PROGRESS: <span>{visitedCount}</span>/<span>{total}</span>
         </div>
-      </section>
+      </div>
 
-      {/* RIGHT */}
-      <aside className="right">
-        {!active ? (
-          <div className="empty">
-            <div className="pill">BETA ARCHIVE</div>
-            <h2>Select a point</h2>
-            <p>
-              Наведи на точку — увидишь название или “?”. Клик — открываешь файл.
-              Прогресс сохраняется.
-            </p>
+      <div className="mapStage">
+        <div className="mapCanvas">
+          <img className="mapImg" src={mapImg} alt="DEMA map" draggable={false} />
 
-            <div className="listTitle">Opened files</div>
-            <div className="list">
-              {opened.length === 0 ? (
-                <div className="emptyHint">No files opened yet.</div>
-              ) : (
-                opened.map((p) => (
-                  <button key={p.id} className="listItem" onClick={() => openPoi(p)}>
-                    <span className="listName">{p.title}</span>
-                    <span className="listEra">{p.era}</span>
-                  </button>
-                ))
-              )}
-            </div>
+          {POIS.map((p) => {
+            const isVisited = visited.includes(p.id);
+            const isActive = activeId === p.id;
 
-            <div className="lockedBox">
-              <div className="lockedTitle">Locked</div>
-              <div className="lockedText">{lockedCount} points hidden.</div>
-            </div>
-          </div>
-        ) : (
-          <div className="file">
-            <div className="fileTop">
-              <div>
-                <div className="pill">FILE OPENED • {active.era}</div>
-                <h2 className="fileTitle">{active.title}</h2>
-              </div>
-
-              <button className="close" onClick={() => setActiveId(null)}>
-                Back
+            return (
+              <button
+                key={p.id}
+                className={[
+                  "poiDot",
+                  isVisited ? "is-visited" : "",
+                  isActive ? "is-active" : "",
+                ].join(" ")}
+                style={{ left: `${p.coords.x}%`, top: `${p.coords.y}%` }}
+                onClick={() => openPoi(p.id)}
+                aria-label={p.title}
+              >
+                <span className="poiPulse" />
+                <span className="poiLabel">{p.title}</span>
               </button>
-            </div>
+            );
+          })}
+        </div>
 
-            <div className="meta">
-              {active.tags?.map((t) => (
-                <span key={t} className="tag">#{t}</span>
-              ))}
-            </div>
+        <aside className={["poiPanel", active ? "is-open" : ""].join(" ")}>
+          <div className="poiPanelInner">
+            <button className="poiClose" onClick={closePanel} aria-label="Close">
+              ✕
+            </button>
 
-            {active.images?.length ? (
-              <div className="gallery">
-                {active.images.map((src, i) => (
-                  <img key={i} className="img" src={src} alt={`${active.title} ${i + 1}`} />
-                ))}
+            {!active ? (
+              <div className="poiEmpty">
+                <div className="poiEmptyKicker">NO FILE SELECTED</div>
+                <div className="poiEmptyText">
+                  Click a marker. The map will answer.
+                </div>
               </div>
             ) : (
-              <div className="missing">
-                No image yet. Добавь картинку в <code>src/assets/poi/</code> и импортни в{" "}
-                <code>poi.js</code>.
-              </div>
-            )}
+              <>
+                <div className="poiMetaTop">
+                  <div className="poiTitle">{active.title}</div>
+                  <div className="poiSub">
+                    <span className="poiEra">{active.era}</span>
+                    <span className="poiStatus">{active.status}</span>
+                  </div>
+                </div>
 
-            <div className="lore">
-              {Array.isArray(active.lore) ? (
-                active.lore.map((p, i) => <p key={i}>{p}</p>)
-              ) : (
-                <p>{active.lore}</p>
-              )}
-            </div>
+                <div className="poiTags">
+                  {active.tags?.map((t) => (
+                    <span key={t} className="poiTag">{t}</span>
+                  ))}
+                </div>
+
+                <div className="poiImages">
+                  {active.images?.slice(0, 3).map((src) => (
+                    <img key={src} className="poiImg" src={src} alt="" />
+                  ))}
+                </div>
+
+                <div className="poiLore">
+                  {active.lore?.map((para, i) => (
+                    <p key={i}>{para}</p>
+                  ))}
+                </div>
+
+                <div className="poiTracks">
+                  <div className="poiSectionTitle">RELATED TRACKS</div>
+                  <ul>
+                    {active.relatedTracks?.map((tr) => (
+                      <li key={tr.title}>
+                        <span className="trkTitle">{tr.title}</span>
+                        <span className="trkEra">{tr.era}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            )}
           </div>
-        )}
-      </aside>
+        </aside>
+      </div>
     </div>
   );
 }
