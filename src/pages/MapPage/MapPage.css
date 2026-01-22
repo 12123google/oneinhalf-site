@@ -1,355 +1,266 @@
-.layout{
+.mapWrap{
   height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 460px;
-  background: #0b0e10;
-  color: rgba(245,248,255,.92);
-  font-family: Inter, system-ui, sans-serif;
-}
-
-/* LEFT */
-.left{
+  background: radial-gradient(1200px 800px at 60% 30%, rgba(255,255,255,0.06), transparent 60%),
+              #050607;
+  color: rgba(255,255,255,0.9);
   overflow: hidden;
-  background:
-    radial-gradient(900px 520px at 40% 20%, rgba(255,255,255,.06), transparent 60%),
-    #0b0e10;
 }
 
-.mapScroll{
-  height: 100vh;
-  overflow: hidden; /* статично, без скролла */
-  padding: 18px;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  gap: 14px;
-}
-
-/* HUD */
-.hud{
-  position: relative;
-  z-index: 10;
-
-  width: fit-content;
-  padding: 12px 14px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(12,14,16,.55);
+.mapTopbar{
+  height: 56px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 0 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
   backdrop-filter: blur(10px);
-  box-shadow: 0 18px 55px rgba(0,0,0,.35);
+  background: rgba(0,0,0,0.25);
 }
 
-.hudTag{
-  font-family: "JetBrains Mono", monospace;
-  letter-spacing: .16em;
+.mapBrand{
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  opacity: 0.75;
   text-transform: uppercase;
-  font-size: 11px;
-  color: rgba(245,248,255,.78);
 }
 
-.hudProg{
-  margin-top: 6px;
-  font-size: 13px;
-  color: rgba(245,248,255,.9);
+.mapProgress{
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  opacity: 0.85;
+}
+.mapProgress span{ opacity: 1; }
+
+.mapStage{
+  height: calc(100vh - 56px);
+  display:grid;
+  grid-template-columns: 1fr 420px;
 }
 
-.hudBtn{
-  margin-top: 10px;
-  width: 100%;
-  border-radius: 12px;
-  padding: 10px 12px;
-  border: 1px solid rgba(255,255,255,.16);
-  background: rgba(255,255,255,.06);
-  color: rgba(245,248,255,.92);
-  cursor: pointer;
-}
-.hudBtn:hover{
-  border-color: rgba(226,59,59,.35);
-}
-
-/* MAP: всегда полностью влезает */
 .mapCanvas{
   position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 18px;
-  overflow: hidden;
-
-  background-repeat: no-repeat;
-  background-size: cover;     /* станет чуть больше */
-  background-position: center; /* центрируем */
-  background-color: #0b0e10;  /* убираем “бумажные поля”, чтобы не палилось */
-
-  max-width: 1200px;
-
-  border: 1px solid rgba(255,255,255,.12);
-  box-shadow: 0 30px 90px rgba(0,0,0,.55);
-}
-
-.mapCanvas::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:
-    radial-gradient(700px 420px at 50% 35%, rgba(255,255,255,.18), transparent 60%),
-    linear-gradient(to bottom, rgba(0,0,0,.10), rgba(0,0,0,.18));
-  mix-blend-mode: multiply;
-  opacity: .65;
-}
-
-/* POI */
-.poi{
-  position: absolute;
-  transform: translate(-50%, -50%);
-  width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  cursor: pointer;
-  z-index: 3;
-
-  border: 2px solid rgba(15,18,20,.75);
-  background: rgba(245,248,255,.55);
-  box-shadow:
-    0 0 0 7px rgba(0,0,0,.10),
-    0 6px 16px rgba(0,0,0,.25);
-
-  transition: transform .15s ease, box-shadow .15s ease, outline-color .15s ease, opacity .15s ease;
-}
-
-.poi::after{
-  content:"";
-  position:absolute;
-  inset:6px;
-  border-radius:999px;
-  background: rgba(20,22,24,.85);
-}
-
-.poi--locked{
-  opacity: .55;
-  background: rgba(255,255,255,.35);
-}
-.poi--locked::after{
-  background: rgba(20,22,24,.55);
-}
-
-.poi--visited{
-  opacity: 1;
-  background: rgba(226,59,59,.25);
-  box-shadow:
-    0 0 0 9px rgba(226,59,59,.12),
-    0 10px 22px rgba(0,0,0,.28);
-}
-.poi--visited::after{
-  background: rgba(226,59,59,.95);
-}
-
-.poi:hover{
-  transform: translate(-50%, -50%) scale(1.12);
-  box-shadow:
-    0 0 0 10px rgba(226,59,59,.12),
-    0 12px 26px rgba(0,0,0,.30);
-}
-
-.poi--active{
-  outline: 3px solid rgba(226,59,59,.6);
-  outline-offset: 5px;
-}
-
-/* hover label */
-.poiLabel{
-  position: absolute;
-  left: 50%;
-  top: -8px;
-  transform: translate(-50%, -110%);
-  padding: 7px 10px;
-  border-radius: 12px;
-
-  border: 1px solid rgba(15,18,20,.30);
-  background: rgba(215,208,194,.92);
-  color: rgba(15,18,20,.92);
-
-  font-size: 12px;
-  font-weight: 600;
-  white-space: nowrap;
-
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .14s ease, transform .14s ease;
-  box-shadow: 0 14px 30px rgba(0,0,0,.25);
-}
-.poi:hover .poiLabel{
-  opacity: 1;
-  transform: translate(-50%, -122%);
-}
-
-/* RIGHT */
-.right{
-  height: 100vh;
-  overflow: auto;
-  border-left: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.04);
-  backdrop-filter: blur(14px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
   padding: 18px;
 }
 
-.pill{
-  display: inline-block;
-  padding: 8px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.16);
-  background: rgba(255,255,255,.06);
-  font-family: "JetBrains Mono", monospace;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  font-size: 11px;
-  color: rgba(245,248,255,.78);
-}
-
-.empty h2{ margin: 12px 0 0; }
-.empty p{
-  margin-top: 10px;
-  color: rgba(245,248,255,.68);
-  line-height: 1.55;
-}
-
-.listTitle{
-  margin-top: 18px;
-  font-family: "JetBrains Mono", monospace;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  font-size: 11px;
-  color: rgba(245,248,255,.58);
-}
-
-.list{
-  margin-top: 10px;
-  display: grid;
-  gap: 8px;
-}
-
-.listItem{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+.mapImg{
   width: 100%;
-  padding: 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.05);
-  color: rgba(245,248,255,.92);
-  cursor: pointer;
+  height: 100%;
+  object-fit: contain;   /* карта полностью в экран */
+  filter: contrast(1.05) saturate(0.95);
+  user-select:none;
+  pointer-events:none;
 }
-.listItem:hover{ border-color: rgba(226,59,59,.25); }
 
-.listEra{
-  font-family: "JetBrains Mono", monospace;
+/* точки */
+.poiDot{
+  position:absolute;
+  transform: translate(-50%, -50%);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor:pointer;
+  outline: none;
+}
+
+.poiPulse{
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  display:block;
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 0 0 0 rgba(255,255,255,0.25);
+  animation: pulse 2.2s infinite;
+}
+
+.poiDot.is-visited .poiPulse{
+  background: rgba(173,246,177,0.9);
+}
+
+.poiDot.is-active .poiPulse{
+  background: rgba(255,228,243,0.95);
+  animation: none;
+  box-shadow: 0 0 24px rgba(255,228,243,0.22);
+}
+
+@keyframes pulse{
+  0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.18); }
+  70% { box-shadow: 0 0 0 14px rgba(255,255,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+}
+
+/* подпись */
+.poiLabel{
+  position:absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 11px;
-  color: rgba(245,248,255,.60);
-}
-
-.fileTop{
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-}
-.fileTitle{ margin: 10px 0 0; }
-
-.close{
-  border: 1px solid rgba(255,255,255,.18);
-  background: rgba(255,255,255,.06);
-  color: rgba(245,248,255,.92);
-  padding: 10px 12px;
-  border-radius: 12px;
-  cursor: pointer;
-}
-
-.meta{
-  margin-top: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag{
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
   padding: 6px 10px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.05);
-  font-family: "JetBrains Mono", monospace;
-  font-size: 11px;
-  color: rgba(245,248,255,.78);
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events:none;
+  transition: opacity .18s ease, transform .18s ease;
 }
 
-.gallery{
-  margin-top: 14px;
-  display: grid;
+.poiDot:hover .poiLabel{
+  opacity: 1;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+/* панель */
+.poiPanel{
+  border-left: 1px solid rgba(255,255,255,0.08);
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(12px);
+  transform: translateX(14px);
+  opacity: 0;
+  transition: transform .22s ease, opacity .22s ease;
+  pointer-events: none;
+}
+
+.poiPanel.is-open{
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.poiPanelInner{
+  height: 100%;
+  padding: 18px;
+  overflow:auto;
+}
+
+.poiClose{
+  position: sticky;
+  top: 0;
+  margin-left: auto;
+  display:block;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.25);
+  color: rgba(255,255,255,0.85);
+  cursor:pointer;
+}
+
+.poiTitle{
+  font-size: 26px;
+  letter-spacing: 0.02em;
+  margin-top: 8px;
+}
+
+.poiSub{
+  display:flex;
   gap: 10px;
-}
-
-.img{
-  width: 100%;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,.12);
-  box-shadow: 0 18px 50px rgba(0,0,0,.25);
-}
-
-.missing{
-  margin-top: 14px;
-  padding: 12px;
-  border-radius: 14px;
-  border: 1px dashed rgba(226,59,59,.30);
-  background: rgba(226,59,59,.08);
-  font-family: "JetBrains Mono", monospace;
+  margin-top: 8px;
   font-size: 12px;
-  color: rgba(245,248,255,.82);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.8;
 }
 
-.lore{
-  margin-top: 14px;
-}
-.lore p{
-  margin: 0 0 12px 0;
-  color: rgba(245,248,255,.78);
-  line-height: 1.65;
+.poiStatus{
+  padding: 4px 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
 }
 
-.lockedBox{
-  margin-top: 14px;
-  padding: 12px;
+.poiTags{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 14px;
+}
+
+.poiTag{
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.poiImages{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 12px 0 14px;
+}
+
+.poiImg{
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
   border-radius: 14px;
-  border: 1px dashed rgba(255,255,255,.16);
-  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  filter: contrast(1.05) saturate(0.95);
 }
-.lockedTitle{
-  font-family: "JetBrains Mono", monospace;
-  letter-spacing: .14em;
+
+.poiLore p{
+  line-height: 1.65;
+  opacity: 0.88;
+  margin: 0 0 10px;
+}
+
+.poiSectionTitle{
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.poiTracks ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  gap: 8px;
+}
+
+.poiTracks li{
+  display:flex;
+  justify-content:space-between;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+}
+
+.trkEra{
+  opacity: 0.65;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   font-size: 11px;
-  color: rgba(245,248,255,.62);
-}
-.lockedText{
-  margin-top: 6px;
-  color: rgba(245,248,255,.70);
-  line-height: 1.5;
 }
 
-.emptyHint{
-  padding: 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.04);
-  color: rgba(245,248,255,.70);
-  line-height: 1.5;
+/* пустое состояние */
+.poiEmpty{
+  margin-top: 40px;
+  opacity: 0.85;
 }
-
-@media (max-width: 900px){
-  .layout{ grid-template-columns: 1fr; }
-  .right{
-    height: auto;
-    border-left: none;
-    border-top: 1px solid rgba(255,255,255,.12);
-  }
-  .mapScroll{ height: 60vh; }
+.poiEmptyKicker{
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+.poiEmptyText{
+  margin-top: 10px;
+  line-height: 1.6;
+  opacity: 0.85;
 }
